@@ -1,0 +1,200 @@
+**Creating a Load Balancer Lab with Nginx and Multiple Vagrant Servers**
+
+**Objective**
+
+Create a load balancer lab using Nginx, three web servers, and one Nginx server. The web servers should host informative HTML webpages.
+
+**Prerequisites**
+
+- Install VirtualBox: Download and install VirtualBox from [**_VirtualBox's official website_**](https://www.virtualbox.org/).
+- Install Vagrant: Download and install Vagrant from the [**_Vagrant website_**](https://www.vagrantup.com/).
+
+**Step 1: Prepare the Lab Directory**
+
+Create a new directory for your project and navigate to it in your terminal. This directory will contain the Vagrant configuration files.
+
+mkdir load_balancer_lab
+
+cd load_balancer_lab
+
+**Step 2: Set Up Vagrant Configuration**
+
+Create a Vagrantfile to define your virtual machines and their configurations.
+
+Vagrant.configure("2") do |config|
+
+config.vm.define "nginx" do |nginx|
+
+nginx.vm.box = "ubuntu/bionic64"
+
+nginx.vm.network "private_network", type: "dhcp"
+
+nginx.vm.provision "shell", path: "provision/nginx.sh"
+
+end
+
+\# Configuration for Web Server 1
+
+config.vm.define "web1" do |web1|
+
+web1.vm.box = "ubuntu/bionic64"
+
+web1.vm.network "private_network", type: "dhcp"
+
+web1.vm.provision "shell", inline: <<-SHELL
+
+apt-get update
+
+apt-get install -y nginx
+
+echo "This is Web Server 1" > /var/www/html/index.html
+
+SHELL
+
+end
+
+\# Configuration for Web Server 2
+
+config.vm.define "web2" do |web2|
+
+web2.vm.box = "ubuntu/bionic64"
+
+web2.vm.network "private_network", type: "dhcp"
+
+web2.vm.provision "shell", inline: <<-SHELL
+
+apt-get update
+
+apt-get install -y nginx
+
+echo "This is Web Server 2" > /var/www/html/index.html
+
+SHELL
+
+end
+
+\# Configuration for Web Server 3
+
+config.vm.define "web3" do |web3|
+
+web3.vm.box = "ubuntu/bionic64"
+
+web3.vm.network "private_network", type: "dhcp"
+
+web3.vm.provision "shell", inline: <<-SHELL
+
+apt-get update
+
+apt-get install -y nginx
+
+echo "This is Web Server 3" > /var/www/html/index.html
+
+SHELL
+
+end
+
+end
+
+**Step 3: Create Provisioning Scripts**
+
+Create provisioning scripts for Nginx and the web servers.
+
+Create provision/nginx.sh:
+
+# !/bin/bash
+
+apt-get update
+
+apt-get install -y nginx
+
+Create provision/webserver.sh:
+
+# !/bin/bash
+
+apt-get update
+
+apt-get install -y nginx
+
+\# Check the hostname and set content accordingly
+
+if \[\[ $(hostname) == "web1" \]\]; then
+
+echo "This is Web Server 1" > /var/www/html/index.html
+
+elif \[\[ $(hostname) == "web2" \]\]; then
+
+echo "This is Web Server 2" > /var/www/html/index.html
+
+elif \[\[ $(hostname) == "web3" \]\]; then
+
+echo "This is Web Server 3" > /var/www/html/index.html
+
+else
+
+echo "This is a default page" > /var/www/html/index.html
+
+fi
+
+**Step 4: Initialize and Start Vagrant Machines**
+
+Navigate to your project directory and run the following command:
+
+vagrant up
+
+This will initialize and start the Nginx and web server virtual machines based on your Vagrant configuration.
+
+**Step 5: Configure Nginx Load Balancer**
+
+SSH into the Nginx virtual machine:
+
+vagrant ssh nginx
+
+Edit the Nginx configuration file to set up load balancing:
+
+sudo nano /etc/nginx/sites-available/default
+
+Edit the file to include the following configuration inside the server block:
+
+location / {
+
+proxy_pass [http://web_servers](http://web_servers/);
+
+}
+
+upstream web_servers {
+
+server &lt;web1_ip&gt;:80;
+
+server &lt;web2_ip&gt;:80;
+
+server &lt;web3_ip&gt;:80;
+
+}
+
+Replace &lt;web1_ip&gt;, &lt;web2_ip&gt;, and &lt;web3_ip&gt; with the actual private IPs of your web server VMs.
+
+**Step 6: Test the Load Balancer**
+
+Open a web browser on your local machine and navigate to the private IP address of your Nginx VM. You should see the load-balanced web servers serving informative HTML pages in a round-robin manner.
+
+**Step 7: Verify Load Balancing**
+
+To verify that load balancing is working, SSH into each web server and check their access logs:
+
+vagrant ssh web1
+
+tail -f /var/log/nginx/access.log
+
+vagrant ssh web2
+
+tail -f /var/log/nginx/access.log
+
+vagrant ssh web3
+
+tail -f /var/log/nginx/access.log
+
+You should see that requests are being distributed between the three web servers, demonstrating successful load balancing.
+
+**Step 8: Check Load Balancing in a Web Browser**
+
+On your local machine (not within the virtual machines), open a web browser. In the browser's address bar, type the private IP address of your Nginx virtual machine. Press Enter. You should observe the load-balanced web servers in action, confirming that Nginx is successfully load-balancing the requests.

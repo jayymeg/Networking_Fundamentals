@@ -15,6 +15,7 @@ Create a new directory for your project and navigate to it in your terminal. Thi
 mkdir load_balancer_lab
 cd load_balancer_lab
 ```
+![my image](https://github.com/jayymeg/Networking_Fundamentals/blob/master/load%20balancer%20lab/step%201-2.png)
 
 ## Step 2: Set Up Vagrant Configuration
 Create a `Vagrantfile` to define your virtual machines and their configurations.

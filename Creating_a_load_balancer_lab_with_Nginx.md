@@ -106,6 +106,9 @@ vagrant up
 ```
 
 This will initialize and start the Nginx and web server virtual machines based on your Vagrant configuration.
+![my image](https://github.com/jayymeg/Networking_Fundamentals/blob/master/load%20balancer%20lab/step%204.png)
+
+![my image](https://github.com/jayymeg/Networking_Fundamentals/blob/master/load%20balancer%20lab/step%204.png)
 
 ## Step 5: Configure Nginx Load Balancer
 SSH into the Nginx virtual machine:
@@ -113,12 +116,14 @@ SSH into the Nginx virtual machine:
 ```bash
 vagrant ssh nginx
 ```
+![my image](https://github.com/jayymeg/Networking_Fundamentals/blob/master/load%20balancer%20lab/step%205.png)
 
 Edit the Nginx configuration file to set up load balancing:
 
 ```bash
 sudo nano /etc/nginx/sites-available/default
 ```
+![my image](https://github.com/jayymeg/Networking_Fundamentals/blob/master/load%20balancer%20lab/step%205(2).png)
 
 Edit the file to include the following configuration inside the server block:
 
@@ -136,11 +141,16 @@ upstream web_servers {
 
 Replace `<web1_ip>`, `<web2_ip>`, and `<web3_ip>` with the actual private IPs of your web server VMs.
 
+![my image](https://github.com/jayymeg/Networking_Fundamentals/blob/master/load%20balancer%20lab/step%205(1).png)
+
+
 ## Step 6: Test the Load Balancer
 Open a web browser on your local machine and navigate to the private IP address of your Nginx VM. You should see the load-balanced web servers serving informative HTML pages in a round-robin manner.
 
 ## Step 7: Verify Load Balancing
 To verify that load balancing is working, SSH into each web server and check their access logs:
+
+![my image](https://github.com/jayymeg/Networking_Fundamentals/blob/master/load%20balancer%20lab/step%207.png)
 
 ```bash
 vagrant ssh web1
@@ -158,3 +168,5 @@ You should see that requests are being distributed between the three web servers
 ## Step 8: Check Load Balancing in a Web Browser
 On your local machine (not within the virtual machines), open a web browser. In the browser's address bar, type the private IP address of your Nginx virtual machine. Press Enter. You should observe the load-balanced web servers in action, confirming that Nginx is successfully load-balancing the requests.
 ```
+
+![my image](https://github.com/jayymeg/Networking_Fundamentals/blob/master/load%20balancer%20lab/step%208.png)

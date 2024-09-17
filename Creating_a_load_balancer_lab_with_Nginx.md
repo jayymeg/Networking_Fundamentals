@@ -62,9 +62,12 @@ Vagrant.configure("2") do |config|
   end
 end
 ```
+![my image](https://github.com/jayymeg/Networking_Fundamentals/blob/master/load%20balancer%20lab/step%202.png)
 
 ## Step 3: Create Provisioning Scripts
 Create provisioning scripts for Nginx and the web servers.
+
+![my image](https://github.com/jayymeg/Networking_Fundamentals/blob/master/load%20balancer%20lab/step%203.png)
 
 ### Create `provision/nginx.sh`:
 
@@ -73,6 +76,7 @@ Create provisioning scripts for Nginx and the web servers.
 apt-get update
 apt-get install -y nginx
 ```
+![my image](https://github.com/jayymeg/Networking_Fundamentals/blob/master/load%20balancer%20lab/step%203(1).png)
 
 ### Create `provision/webserver.sh`:
 
@@ -92,6 +96,7 @@ else
     echo "This is a default page" > /var/www/html/index.html
 fi
 ```
+![my image](https://github.com/jayymeg/Networking_Fundamentals/blob/master/load%20balancer%20lab/step%203(2).png)
 
 ## Step 4: Initialize and Start Vagrant Machines
 Navigate to your project directory and run the following command:

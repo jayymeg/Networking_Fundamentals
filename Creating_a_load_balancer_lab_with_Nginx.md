@@ -167,6 +167,9 @@ You should see that requests are being distributed between the three web servers
 
 ## Step 8: Check Load Balancing in a Web Browser
 On your local machine (not within the virtual machines), open a web browser. In the browser's address bar, type the private IP address of your Nginx virtual machine. Press Enter. You should observe the load-balanced web servers in action, confirming that Nginx is successfully load-balancing the requests.
-```
+
 
 ![my image](https://github.com/jayymeg/Networking_Fundamentals/blob/master/load%20balancer%20lab/step%208.png)
+
+```
+

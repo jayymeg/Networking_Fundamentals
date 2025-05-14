@@ -60,6 +60,9 @@ Vagrant.configure("2") do |config|
   end
 end
 ```
+
+![my image](https://github.com/jayymeg/Networking_Fundamentals/blob/master/Networking%20load%20balancer%20with%20nginx%20and%20multiple%20VM%20servers/M1.png)
+
 ## Step 3: Create Provisioning Scripts
 Create provisioning scripts for Nginx and the web servers.
 ### Create `provision/nginx.sh`:
@@ -69,6 +72,8 @@ Create provisioning scripts for Nginx and the web servers.
 apt-get update
 apt-get install -y nginx
 ```
+![my image](https://github.com/jayymeg/Networking_Fundamentals/blob/master/Networking%20load%20balancer%20with%20nginx%20and%20multiple%20VM%20servers/M2.png)
+
 ### Create `provision/webserver.sh`:
 
 ```bash
@@ -87,12 +92,20 @@ else
     echo "This is a default page" > /var/www/html/index.html
 fi
 ```
+
+![my image](https://github.com/jayymeg/Networking_Fundamentals/blob/master/Networking%20load%20balancer%20with%20nginx%20and%20multiple%20VM%20servers/M3.png)
+
+
+![my image](https://github.com/jayymeg/Networking_Fundamentals/blob/master/Networking%20load%20balancer%20with%20nginx%20and%20multiple%20VM%20servers/M4.png)
+
 ## Step 4: Initialize and Start Vagrant Machines
 Navigate to your project directory and run the following command:
 
 ```bash
 vagrant up
 ```
+
+![my image](https://github.com/jayymeg/Networking_Fundamentals/blob/master/Networking%20load%20balancer%20with%20nginx%20and%20multiple%20VM%20servers/M5.png)
 
 This will initialize and start the Nginx and web server virtual machines based on your Vagrant configuration.
 ## Step 5: Configure Nginx Load Balancer
@@ -101,11 +114,16 @@ SSH into the Nginx virtual machine:
 ```bash
 vagrant ssh nginx
 ```
+
+![my image](https://github.com/jayymeg/Networking_Fundamentals/blob/master/Networking%20load%20balancer%20with%20nginx%20and%20multiple%20VM%20servers/M6.png)
+
 Edit the Nginx configuration file to set up load balancing:
 
 ```bash
 sudo nano /etc/nginx/sites-available/default
 ```
+![my image](https://github.com/jayymeg/Networking_Fundamentals/blob/master/Networking%20load%20balancer%20with%20nginx%20and%20multiple%20VM%20servers/M8.png)
+
 Edit the file to include the following configuration inside the server block:
 
 ```nginx
@@ -120,7 +138,10 @@ upstream web_servers {
 }
 ```
 
+![my image](https://github.com/jayymeg/Networking_Fundamentals/blob/master/Networking%20load%20balancer%20with%20nginx%20and%20multiple%20VM%20servers/M7.png)
+
 Replace `<web1_ip>`, `<web2_ip>`, and `<web3_ip>` with the actual private IPs of your web server VMs.
+
 ## Step 6: Test the Load Balancer
 Open a web browser on your local machine and navigate to the private IP address of your Nginx VM. You should see the load-balanced web servers serving informative HTML pages in a round-robin manner.
 
@@ -136,9 +157,11 @@ tail -f /var/log/nginx/access.log
 vagrant ssh web3
 tail -f /var/log/nginx/access.log
 ```
-
 You should see that requests are being distributed between the three web servers, demonstrating successful load balancing.
+
+![my image](https://github.com/jayymeg/Networking_Fundamentals/blob/master/Networking%20load%20balancer%20with%20nginx%20and%20multiple%20VM%20servers/M9.png)
 
 ## Step 8: Check Load Balancing in a Web Browser
 On your local machine (not within the virtual machines), open a web browser. In the browser's address bar, type the private IP address of your Nginx virtual machine. Press Enter. You should observe the load-balanced web servers in action, confirming that Nginx is successfully load-balancing the requests.
 ```
+![my image](https://github.com/jayymeg/Networking_Fundamentals/blob/master/Networking%20load%20balancer%20with%20nginx%20and%20multiple%20VM%20servers/M10.png)
